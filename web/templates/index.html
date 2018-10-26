@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OJT プロトタイプ</title>
+    <script type="text/javascript">
+      var hostURL = 'http://0.0.0.0:7070';
+     
+      function send_code(){
+        var code = document.getElementById("mytextarea").value;
+        var messages = $("#messages")
+        console.log(code);
+        var obj = {
+          language: "python",
+          script: code
+        };
+        
+        var jcode = JSON.stringify(obj);
+        console.log(jcode)
+
+        $.ajax({
+            type:'POST',
+            url: hostURL + "/python",
+            contentType: 'application/json',
+            dataType: 'json',
+            data : jcode,
+            timeout:3000,
+        }).done(function(data) {
+            console.log(data);
+            messages.append($("<li>").text(data.result));
+        }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("error");
+        })
+      }
+    </script>
+  </head>
+  <body>
+
+    <h1>OJT プロトタイプ</h1>
+    <textarea id="mytextarea" rows="20" cols="100">
+for i in range(1, 101):
+    if i % 15 == 0:
+        print("Fizz Buzz!")
+    elif i % 3 == 0:
+        print("Fizz!")
+    elif i % 5 == 0:
+        print("Buzz!")
+    else:
+        print(i)
+    </textarea>
+    <input type="button" value="送信" onclick="send_code();">
+    <ul id="messages"></ul>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  </body>
+</html>
+

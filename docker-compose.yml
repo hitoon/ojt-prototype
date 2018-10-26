@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    container_name: web
+    build: ./web
+    ports:
+      - 8080:8080
+
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - 7070:7070
+    volumes:
+      - codeDB:/goworks/src/github.com/ojt/code
+
+  python-runner:
+    container_name: python-runner
+    build: ./runner/python
+    ports:
+      - 9090:9090
+    volumes:
+      - codeDB:/goworks/src/github.com/ojt/code
+
+volumes:
+    codeDB:
